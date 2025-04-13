@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landscape Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Beautiful Landscapes</h1>
+        <p>A collection of stunning natural scenery</p>
+    </header>
+
+    <main class="gallery-container">
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="images/mountain.svg" alt="Mountain landscape" class="gallery-img" data-description="Majestic mountain peaks reaching into the clouds">
+            </div>
+            <div class="gallery-item">
+                <img src="images/ocean.svg" alt="Ocean view" class="gallery-img" data-description="Serene ocean waves at sunset">
+            </div>
+            <div class="gallery-item">
+                <img src="images/forest.svg" alt="Forest scene" class="gallery-img" data-description="Dense forest with morning mist">
+            </div>
+            <div class="gallery-item">
+                <img src="images/mountain.svg" alt="Mountain landscape" class="gallery-img" data-description="Another majestic mountain view">
+            </div>
+            <div class="gallery-item">
+                <img src="images/ocean.svg" alt="Ocean view" class="gallery-img" data-description="Beautiful ocean scenery at dawn">
+            </div>
+            <div class="gallery-item">
+                <img src="images/forest.svg" alt="Forest scene" class="gallery-img" data-description="Peaceful forest landscape"
+            </div>
+        </div>
+    </main>
+
+    <div class="lightbox" id="lightbox">
+        <span class="close-btn">&times;</span>
+        <img src="" alt="" class="lightbox-img">
+        <p class="image-description"></p>
+        <button class="nav-btn prev-btn">&lt;</button>
+        <button class="nav-btn next-btn">&gt;</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = lightbox.querySelector('.lightbox-img');
+            const description = lightbox.querySelector('.image-description');
+            const closeBtn = lightbox.querySelector('.close-btn');
+            const prevBtn = lightbox.querySelector('.prev-btn');
+            const nextBtn = lightbox.querySelector('.next-btn');
+            const galleryImages = document.querySelectorAll('.gallery-img');
+            let currentImageIndex = 0;
+
+            function openLightbox(index) {
+                currentImageIndex = index;
+                const image = galleryImages[index];
+                lightboxImg.src = image.src;
+                lightboxImg.alt = image.alt;
+                description.textContent = image.dataset.description;
+                lightbox.style.display = 'flex';
+            }
+
+            function closeLightbox() {
+                lightbox.style.display = 'none';
+            }
+
+            function showNextImage() {
+                currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+                openLightbox(currentImageIndex);
+            }
+
+            function showPrevImage() {
+                currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+                openLightbox(currentImageIndex);
+            }
+
+            galleryImages.forEach((img, index) => {
+                img.addEventListener('click', () => openLightbox(index));
+            });
+
+            closeBtn.addEventListener('click', closeLightbox);
+            nextBtn.addEventListener('click', showNextImage);
+            prevBtn.addEventListener('click', showPrevImage);
+
+            document.addEventListener('keydown', (e) => {
+                if (lightbox.style.display === 'flex') {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowRight') showNextImage();
+                    if (e.key === 'ArrowLeft') showPrevImage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
